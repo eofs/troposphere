@@ -17,6 +17,46 @@ from .validators.eks import (
 )
 
 
+class AccessScope(AWSProperty):
+    """
+    `AccessScope <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-eks-accessentry-accessscope.html>`__
+    """
+
+    props: PropsDictType = {
+        "Namespaces": ([str], False),
+        "Type": (str, True),
+    }
+
+
+class AccessPolicy(AWSProperty):
+    """
+    `AccessPolicy <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-eks-accessentry-accesspolicy.html>`__
+    """
+
+    props: PropsDictType = {
+        "AccessScope": (AccessScope, True),
+        "PolicyArn": (str, True),
+    }
+
+
+class AccessEntry(AWSObject):
+    """
+    `AccessEntry <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-eks-accessentry.html>`__
+    """
+
+    resource_type = "AWS::EKS::AccessEntry"
+
+    props: PropsDictType = {
+        "AccessPolicies": ([AccessPolicy], False),
+        "ClusterName": (str, True),
+        "KubernetesGroups": ([str], False),
+        "PrincipalArn": (str, True),
+        "Tags": (Tags, False),
+        "Type": (str, False),
+        "Username": (str, False),
+    }
+
+
 class Addon(AWSObject):
     """
     `Addon <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-eks-addon.html>`__
@@ -33,6 +73,17 @@ class Addon(AWSObject):
         "ResolveConflicts": (str, False),
         "ServiceAccountRoleArn": (str, False),
         "Tags": (Tags, False),
+    }
+
+
+class AccessConfig(AWSProperty):
+    """
+    `AccessConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-eks-cluster-accessconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "AuthenticationMode": (str, False),
+        "BootstrapClusterCreatorAdminPermissions": (boolean, False),
     }
 
 
@@ -146,6 +197,7 @@ class Cluster(AWSObject):
     resource_type = "AWS::EKS::Cluster"
 
     props: PropsDictType = {
+        "AccessConfig": (AccessConfig, False),
         "EncryptionConfig": ([EncryptionConfig], False),
         "KubernetesNetworkConfig": (KubernetesNetworkConfig, False),
         "Logging": (Logging, False),
@@ -324,4 +376,20 @@ class Nodegroup(AWSObject):
         "Taints": ([Taint], False),
         "UpdateConfig": (UpdateConfig, False),
         "Version": (str, False),
+    }
+
+
+class PodIdentityAssociation(AWSObject):
+    """
+    `PodIdentityAssociation <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-eks-podidentityassociation.html>`__
+    """
+
+    resource_type = "AWS::EKS::PodIdentityAssociation"
+
+    props: PropsDictType = {
+        "ClusterName": (str, True),
+        "Namespace": (str, True),
+        "RoleArn": (str, True),
+        "ServiceAccount": (str, True),
+        "Tags": (Tags, False),
     }

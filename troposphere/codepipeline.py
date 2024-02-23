@@ -114,6 +114,86 @@ class DisableInboundStageTransitions(AWSProperty):
     }
 
 
+class GitBranchFilterCriteria(AWSProperty):
+    """
+    `GitBranchFilterCriteria <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-codepipeline-pipeline-triggers-git-branch-filter-criteria.html>`__
+    """
+
+    props: PropsDictType = {
+        "Excludes": ([str], False),
+        "Includes": ([str], False),
+    }
+
+
+class GitFilePathFilterCriteria(AWSProperty):
+    """
+    `GitFilePathFilterCriteria <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-codepipeline-pipeline-triggers-git-file-path-filter-criteria.html>`__
+    """
+
+    props: PropsDictType = {
+        "Excludes": ([str], False),
+        "Includes": ([str], False),
+    }
+
+
+class GitPullRequestFilter(AWSProperty):
+    """
+    `GitPullRequestFilter <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-codepipeline-pipeline-triggers-git-pull-request-filter.html>`__
+    """
+
+    props: PropsDictType = {
+        "Branches": (GitBranchFilterCriteria, False),
+        "Events": ([str], False),
+        "FilePaths": (GitFilePathFilterCriteria, False),
+    }
+
+
+class GitTagFilterCriteria(AWSProperty):
+    """
+    `GitTagFilterCriteria <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-codepipeline-pipeline-triggers-git-tag-filter-criteria.html>`__
+    """
+
+    props: PropsDictType = {
+        "Excludes": ([str], False),
+        "Includes": ([str], False),
+    }
+
+
+class GitPushFilter(AWSProperty):
+    """
+    `GitPushFilter <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-codepipeline-pipeline-triggers-git-push-filter.html>`__
+    """
+
+    props: PropsDictType = {
+        "Branches": (GitBranchFilterCriteria, False),
+        "FilePaths": (GitFilePathFilterCriteria, False),
+        "Tags": (GitTagFilterCriteria, False),
+    }
+
+
+class GitConfiguration(AWSProperty):
+    """
+    `GitConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-codepipeline-pipeline-triggers-git-configuration.html>`__
+    """
+
+    props: PropsDictType = {
+        "PullRequest": ([GitPullRequestFilter], False),
+        "Push": ([GitPushFilter], False),
+        "SourceActionName": (str, True),
+    }
+
+
+class PipelineTriggerDeclaration(AWSProperty):
+    """
+    `PipelineTriggerDeclaration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-codepipeline-pipeline-triggers.html>`__
+    """
+
+    props: PropsDictType = {
+        "GitConfiguration": (GitConfiguration, False),
+        "ProviderType": (str, True),
+    }
+
+
 class ActionTypeId(AWSProperty):
     """
     `ActionTypeId <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-codepipeline-pipeline-stages-actions-actiontypeid.html>`__
@@ -188,6 +268,18 @@ class Stages(AWSProperty):
     }
 
 
+class VariableDeclaration(AWSProperty):
+    """
+    `VariableDeclaration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-codepipeline-pipeline-variables.html>`__
+    """
+
+    props: PropsDictType = {
+        "DefaultValue": (str, False),
+        "Description": (str, False),
+        "Name": (str, True),
+    }
+
+
 class Pipeline(AWSObject):
     """
     `Pipeline <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codepipeline-pipeline.html>`__
@@ -199,11 +291,15 @@ class Pipeline(AWSObject):
         "ArtifactStore": (ArtifactStore, False),
         "ArtifactStores": ([ArtifactStoreMap], False),
         "DisableInboundStageTransitions": ([DisableInboundStageTransitions], False),
+        "ExecutionMode": (str, False),
         "Name": (str, False),
+        "PipelineType": (str, False),
         "RestartExecutionOnUpdate": (boolean, False),
         "RoleArn": (str, True),
         "Stages": ([Stages], True),
         "Tags": (Tags, False),
+        "Triggers": ([PipelineTriggerDeclaration], False),
+        "Variables": ([VariableDeclaration], False),
     }
 
 

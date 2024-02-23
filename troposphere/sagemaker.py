@@ -39,6 +39,42 @@ class App(AWSObject):
     }
 
 
+class CustomImageContainerEnvironmentVariable(AWSProperty):
+    """
+    `CustomImageContainerEnvironmentVariable <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-appimageconfig-customimagecontainerenvironmentvariable.html>`__
+    """
+
+    props: PropsDictType = {
+        "Key": (str, True),
+        "Value": (str, True),
+    }
+
+
+class ContainerConfig(AWSProperty):
+    """
+    `ContainerConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-appimageconfig-containerconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "ContainerArguments": ([str], False),
+        "ContainerEntrypoint": ([str], False),
+        "ContainerEnvironmentVariables": (
+            [CustomImageContainerEnvironmentVariable],
+            False,
+        ),
+    }
+
+
+class JupyterLabAppImageConfig(AWSProperty):
+    """
+    `JupyterLabAppImageConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-appimageconfig-jupyterlabappimageconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "ContainerConfig": (ContainerConfig, False),
+    }
+
+
 class FileSystemConfig(AWSProperty):
     """
     `FileSystemConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-appimageconfig-filesystemconfig.html>`__
@@ -82,6 +118,7 @@ class AppImageConfig(AWSObject):
 
     props: PropsDictType = {
         "AppImageConfigName": (str, True),
+        "JupyterLabAppImageConfig": (JupyterLabAppImageConfig, False),
         "KernelGatewayImageConfig": (KernelGatewayImageConfig, False),
         "Tags": (Tags, False),
     }
@@ -200,6 +237,7 @@ class BatchTransformInput(AWSProperty):
     props: PropsDictType = {
         "DataCapturedDestinationS3Uri": (str, True),
         "DatasetFormat": (DatasetFormat, True),
+        "ExcludeFeaturesAttribute": (str, False),
         "LocalPath": (str, True),
         "S3DataDistributionType": (str, False),
         "S3InputMode": (str, False),
@@ -213,6 +251,7 @@ class EndpointInput(AWSProperty):
 
     props: PropsDictType = {
         "EndpointName": (str, True),
+        "ExcludeFeaturesAttribute": (str, False),
         "LocalPath": (str, True),
         "S3DataDistributionType": (str, False),
         "S3InputMode": (str, False),
@@ -440,6 +479,17 @@ class DefaultSpaceSettings(AWSProperty):
     }
 
 
+class DockerSettings(AWSProperty):
+    """
+    `DockerSettings <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-domain-dockersettings.html>`__
+    """
+
+    props: PropsDictType = {
+        "EnableDockerAccess": (str, False),
+        "VpcOnlyTrustedAccounts": ([str], False),
+    }
+
+
 class RStudioServerProDomainSettings(AWSProperty):
     """
     `RStudioServerProDomainSettings <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-domain-rstudioserverprodomainsettings.html>`__
@@ -459,8 +509,96 @@ class DomainSettings(AWSProperty):
     """
 
     props: PropsDictType = {
+        "DockerSettings": (DockerSettings, False),
         "RStudioServerProDomainSettings": (RStudioServerProDomainSettings, False),
         "SecurityGroupIds": ([str], False),
+    }
+
+
+class CodeEditorAppSettings(AWSProperty):
+    """
+    `CodeEditorAppSettings <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-userprofile-codeeditorappsettings.html>`__
+    """
+
+    props: PropsDictType = {
+        "DefaultResourceSpec": (ResourceSpec, False),
+        "LifecycleConfigArns": ([str], False),
+    }
+
+
+class EFSFileSystemConfig(AWSProperty):
+    """
+    `EFSFileSystemConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-userprofile-efsfilesystemconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "FileSystemId": (str, True),
+        "FileSystemPath": (str, False),
+    }
+
+
+class CustomFileSystemConfig(AWSProperty):
+    """
+    `CustomFileSystemConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-userprofile-customfilesystemconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "EFSFileSystemConfig": (EFSFileSystemConfig, False),
+    }
+
+
+class CustomPosixUserConfig(AWSProperty):
+    """
+    `CustomPosixUserConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-userprofile-customposixuserconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "Gid": (integer, True),
+        "Uid": (integer, True),
+    }
+
+
+class DefaultEbsStorageSettings(AWSProperty):
+    """
+    `DefaultEbsStorageSettings <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-userprofile-defaultebsstoragesettings.html>`__
+    """
+
+    props: PropsDictType = {
+        "DefaultEbsVolumeSizeInGb": (integer, True),
+        "MaximumEbsVolumeSizeInGb": (integer, True),
+    }
+
+
+class DefaultSpaceStorageSettings(AWSProperty):
+    """
+    `DefaultSpaceStorageSettings <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-userprofile-defaultspacestoragesettings.html>`__
+    """
+
+    props: PropsDictType = {
+        "DefaultEbsStorageSettings": (DefaultEbsStorageSettings, False),
+    }
+
+
+class CodeRepositoryProperty(AWSProperty):
+    """
+    `CodeRepositoryProperty <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-userprofile-coderepository.html>`__
+    """
+
+    props: PropsDictType = {
+        "RepositoryUrl": (str, True),
+    }
+
+
+class JupyterLabAppSettings(AWSProperty):
+    """
+    `JupyterLabAppSettings <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-userprofile-jupyterlabappsettings.html>`__
+    """
+
+    props: PropsDictType = {
+        "CodeRepositories": ([CodeRepositoryProperty], False),
+        "CustomImages": ([CustomImage], False),
+        "DefaultResourceSpec": (ResourceSpec, False),
+        "LifecycleConfigArns": ([str], False),
     }
 
 
@@ -493,12 +631,19 @@ class UserSettings(AWSProperty):
     """
 
     props: PropsDictType = {
+        "CodeEditorAppSettings": (CodeEditorAppSettings, False),
+        "CustomFileSystemConfigs": ([CustomFileSystemConfig], False),
+        "CustomPosixUserConfig": (CustomPosixUserConfig, False),
+        "DefaultLandingUri": (str, False),
         "ExecutionRole": (str, False),
+        "JupyterLabAppSettings": (JupyterLabAppSettings, False),
         "JupyterServerAppSettings": (JupyterServerAppSettings, False),
         "KernelGatewayAppSettings": (KernelGatewayAppSettings, False),
         "RStudioServerProAppSettings": (RStudioServerProAppSettings, False),
         "SecurityGroups": ([str], False),
         "SharingSettings": (SharingSettings, False),
+        "SpaceStorageSettings": (DefaultSpaceStorageSettings, False),
+        "StudioWebPortal": (str, False),
     }
 
 
@@ -794,6 +939,28 @@ class ExplainerConfig(AWSProperty):
     }
 
 
+class ManagedInstanceScaling(AWSProperty):
+    """
+    `ManagedInstanceScaling <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-endpointconfig-productionvariant-managedinstancescaling.html>`__
+    """
+
+    props: PropsDictType = {
+        "MaxInstanceCount": (integer, False),
+        "MinInstanceCount": (integer, False),
+        "Status": (str, False),
+    }
+
+
+class RoutingConfig(AWSProperty):
+    """
+    `RoutingConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-endpointconfig-productionvariant-routingconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "RoutingStrategy": (str, False),
+    }
+
+
 class ServerlessConfig(AWSProperty):
     """
     `ServerlessConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-endpointconfig-productionvariant-serverlessconfig.html>`__
@@ -816,10 +983,12 @@ class ProductionVariant(AWSProperty):
         "ContainerStartupHealthCheckTimeoutInSeconds": (integer, False),
         "EnableSSMAccess": (boolean, False),
         "InitialInstanceCount": (integer, False),
-        "InitialVariantWeight": (double, True),
+        "InitialVariantWeight": (double, False),
         "InstanceType": (str, False),
+        "ManagedInstanceScaling": (ManagedInstanceScaling, False),
         "ModelDataDownloadTimeoutInSeconds": (integer, False),
-        "ModelName": (str, True),
+        "ModelName": (str, False),
+        "RoutingConfig": (RoutingConfig, False),
         "ServerlessConfig": (ServerlessConfig, False),
         "VariantName": (str, True),
         "VolumeSizeInGB": (integer, False),
@@ -836,12 +1005,15 @@ class EndpointConfig(AWSObject):
     props: PropsDictType = {
         "AsyncInferenceConfig": (AsyncInferenceConfig, False),
         "DataCaptureConfig": (DataCaptureConfig, False),
+        "EnableNetworkIsolation": (boolean, False),
         "EndpointConfigName": (str, False),
+        "ExecutionRoleArn": (str, False),
         "ExplainerConfig": (ExplainerConfig, False),
         "KmsKeyId": (str, False),
         "ProductionVariants": ([ProductionVariant], True),
         "ShadowProductionVariants": ([ProductionVariant], False),
         "Tags": (Tags, False),
+        "VpcConfig": (VpcConfig, False),
     }
 
 
@@ -902,6 +1074,17 @@ class OnlineStoreSecurityConfig(AWSProperty):
     }
 
 
+class TtlDuration(AWSProperty):
+    """
+    `TtlDuration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-featuregroup-ttlduration.html>`__
+    """
+
+    props: PropsDictType = {
+        "Unit": (str, False),
+        "Value": (integer, False),
+    }
+
+
 class OnlineStoreConfig(AWSProperty):
     """
     `OnlineStoreConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-featuregroup-onlinestoreconfig.html>`__
@@ -910,6 +1093,20 @@ class OnlineStoreConfig(AWSProperty):
     props: PropsDictType = {
         "EnableOnlineStore": (boolean, False),
         "SecurityConfig": (OnlineStoreSecurityConfig, False),
+        "StorageType": (str, False),
+        "TtlDuration": (TtlDuration, False),
+    }
+
+
+class ThroughputConfig(AWSProperty):
+    """
+    `ThroughputConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-featuregroup-throughputconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "ProvisionedReadCapacityUnits": (integer, False),
+        "ProvisionedWriteCapacityUnits": (integer, False),
+        "ThroughputMode": (str, True),
     }
 
 
@@ -930,6 +1127,7 @@ class FeatureGroup(AWSObject):
         "RecordIdentifierFeatureName": (str, True),
         "RoleArn": (str, False),
         "Tags": (Tags, False),
+        "ThroughputConfig": (ThroughputConfig, False),
     }
 
 
@@ -968,6 +1166,101 @@ class ImageVersion(AWSObject):
         "ProgrammingLang": (str, False),
         "ReleaseNotes": (str, False),
         "VendorGuidance": (str, False),
+    }
+
+
+class InferenceComponentRuntimeConfig(AWSProperty):
+    """
+    `InferenceComponentRuntimeConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-inferencecomponent-inferencecomponentruntimeconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "CopyCount": (integer, False),
+        "CurrentCopyCount": (integer, False),
+        "DesiredCopyCount": (integer, False),
+    }
+
+
+class InferenceComponentComputeResourceRequirements(AWSProperty):
+    """
+    `InferenceComponentComputeResourceRequirements <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-inferencecomponent-inferencecomponentcomputeresourcerequirements.html>`__
+    """
+
+    props: PropsDictType = {
+        "MaxMemoryRequiredInMb": (integer, False),
+        "MinMemoryRequiredInMb": (integer, False),
+        "NumberOfAcceleratorDevicesRequired": (double, False),
+        "NumberOfCpuCoresRequired": (double, False),
+    }
+
+
+class DeployedImage(AWSProperty):
+    """
+    `DeployedImage <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-inferencecomponent-deployedimage.html>`__
+    """
+
+    props: PropsDictType = {
+        "ResolutionTime": (str, False),
+        "ResolvedImage": (str, False),
+        "SpecifiedImage": (str, False),
+    }
+
+
+class InferenceComponentContainerSpecification(AWSProperty):
+    """
+    `InferenceComponentContainerSpecification <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-inferencecomponent-inferencecomponentcontainerspecification.html>`__
+    """
+
+    props: PropsDictType = {
+        "ArtifactUrl": (str, False),
+        "DeployedImage": (DeployedImage, False),
+        "Environment": (dict, False),
+        "Image": (str, False),
+    }
+
+
+class InferenceComponentStartupParameters(AWSProperty):
+    """
+    `InferenceComponentStartupParameters <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-inferencecomponent-inferencecomponentstartupparameters.html>`__
+    """
+
+    props: PropsDictType = {
+        "ContainerStartupHealthCheckTimeoutInSeconds": (integer, False),
+        "ModelDataDownloadTimeoutInSeconds": (integer, False),
+    }
+
+
+class InferenceComponentSpecification(AWSProperty):
+    """
+    `InferenceComponentSpecification <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-inferencecomponent-inferencecomponentspecification.html>`__
+    """
+
+    props: PropsDictType = {
+        "ComputeResourceRequirements": (
+            InferenceComponentComputeResourceRequirements,
+            True,
+        ),
+        "Container": (InferenceComponentContainerSpecification, False),
+        "ModelName": (str, False),
+        "StartupParameters": (InferenceComponentStartupParameters, False),
+    }
+
+
+class InferenceComponent(AWSObject):
+    """
+    `InferenceComponent <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-sagemaker-inferencecomponent.html>`__
+    """
+
+    resource_type = "AWS::SageMaker::InferenceComponent"
+
+    props: PropsDictType = {
+        "EndpointArn": (str, False),
+        "EndpointName": (str, True),
+        "InferenceComponentName": (str, False),
+        "RuntimeConfig": (InferenceComponentRuntimeConfig, True),
+        "Specification": (InferenceComponentSpecification, True),
+        "Tags": (Tags, False),
+        "VariantName": (str, True),
     }
 
 
@@ -1095,6 +1388,27 @@ class ImageConfig(AWSProperty):
     }
 
 
+class S3DataSource(AWSProperty):
+    """
+    `S3DataSource <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-modelpackage-s3datasource.html>`__
+    """
+
+    props: PropsDictType = {
+        "S3DataType": (str, True),
+        "S3Uri": (str, True),
+    }
+
+
+class ModelDataSource(AWSProperty):
+    """
+    `ModelDataSource <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-model-containerdefinition-modeldatasource.html>`__
+    """
+
+    props: PropsDictType = {
+        "S3DataSource": (S3DataSource, True),
+    }
+
+
 class MultiModelConfig(AWSProperty):
     """
     `MultiModelConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-model-containerdefinition-multimodelconfig.html>`__
@@ -1117,6 +1431,7 @@ class ContainerDefinition(AWSProperty):
         "ImageConfig": (ImageConfig, False),
         "InferenceSpecificationName": (str, False),
         "Mode": (str, False),
+        "ModelDataSource": (ModelDataSource, False),
         "ModelDataUrl": (str, False),
         "ModelPackageName": (str, False),
         "MultiModelConfig": (MultiModelConfig, False),
@@ -1143,7 +1458,7 @@ class Model(AWSObject):
     props: PropsDictType = {
         "Containers": ([ContainerDefinition], False),
         "EnableNetworkIsolation": (boolean, False),
-        "ExecutionRoleArn": (str, True),
+        "ExecutionRoleArn": (str, False),
         "InferenceExecutionConfig": (InferenceExecutionConfig, False),
         "ModelName": (str, False),
         "PrimaryContainer": (ContainerDefinition, False),
@@ -1846,17 +2161,6 @@ class SourceAlgorithmSpecification(AWSProperty):
     }
 
 
-class S3DataSource(AWSProperty):
-    """
-    `S3DataSource <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-modelpackage-s3datasource.html>`__
-    """
-
-    props: PropsDictType = {
-        "S3DataType": (str, True),
-        "S3Uri": (str, True),
-    }
-
-
 class DataSource(AWSProperty):
     """
     `DataSource <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-modelpackage-datasource.html>`__
@@ -2155,6 +2459,8 @@ class ScheduleConfig(AWSProperty):
     """
 
     props: PropsDictType = {
+        "DataAnalysisEndTime": (str, False),
+        "DataAnalysisStartTime": (str, False),
         "ScheduleExpression": (str, True),
     }
 
@@ -2360,14 +2666,100 @@ class Project(AWSObject):
     }
 
 
+class OwnershipSettings(AWSProperty):
+    """
+    `OwnershipSettings <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-space-ownershipsettings.html>`__
+    """
+
+    props: PropsDictType = {
+        "OwnerUserProfileName": (str, True),
+    }
+
+
+class EFSFileSystem(AWSProperty):
+    """
+    `EFSFileSystem <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-space-efsfilesystem.html>`__
+    """
+
+    props: PropsDictType = {
+        "FileSystemId": (str, True),
+    }
+
+
+class CustomFileSystem(AWSProperty):
+    """
+    `CustomFileSystem <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-space-customfilesystem.html>`__
+    """
+
+    props: PropsDictType = {
+        "EFSFileSystem": (EFSFileSystem, False),
+    }
+
+
+class SpaceCodeEditorAppSettings(AWSProperty):
+    """
+    `SpaceCodeEditorAppSettings <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-space-spacecodeeditorappsettings.html>`__
+    """
+
+    props: PropsDictType = {
+        "DefaultResourceSpec": (ResourceSpec, False),
+    }
+
+
+class SpaceJupyterLabAppSettings(AWSProperty):
+    """
+    `SpaceJupyterLabAppSettings <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-space-spacejupyterlabappsettings.html>`__
+    """
+
+    props: PropsDictType = {
+        "CodeRepositories": ([CodeRepositoryProperty], False),
+        "DefaultResourceSpec": (ResourceSpec, False),
+    }
+
+
+class EbsStorageSettings(AWSProperty):
+    """
+    `EbsStorageSettings <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-space-ebsstoragesettings.html>`__
+    """
+
+    props: PropsDictType = {
+        "EbsVolumeSizeInGb": (integer, True),
+    }
+
+
+class SpaceStorageSettings(AWSProperty):
+    """
+    `SpaceStorageSettings <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-space-spacestoragesettings.html>`__
+    """
+
+    props: PropsDictType = {
+        "EbsStorageSettings": (EbsStorageSettings, False),
+    }
+
+
 class SpaceSettings(AWSProperty):
     """
     `SpaceSettings <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-space-spacesettings.html>`__
     """
 
     props: PropsDictType = {
+        "AppType": (str, False),
+        "CodeEditorAppSettings": (SpaceCodeEditorAppSettings, False),
+        "CustomFileSystems": ([CustomFileSystem], False),
+        "JupyterLabAppSettings": (SpaceJupyterLabAppSettings, False),
         "JupyterServerAppSettings": (JupyterServerAppSettings, False),
         "KernelGatewayAppSettings": (KernelGatewayAppSettings, False),
+        "SpaceStorageSettings": (SpaceStorageSettings, False),
+    }
+
+
+class SpaceSharingSettings(AWSProperty):
+    """
+    `SpaceSharingSettings <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-space-spacesharingsettings.html>`__
+    """
+
+    props: PropsDictType = {
+        "SharingType": (str, True),
     }
 
 
@@ -2380,8 +2772,11 @@ class Space(AWSObject):
 
     props: PropsDictType = {
         "DomainId": (str, True),
+        "OwnershipSettings": (OwnershipSettings, False),
+        "SpaceDisplayName": (str, False),
         "SpaceName": (str, True),
         "SpaceSettings": (SpaceSettings, False),
+        "SpaceSharingSettings": (SpaceSharingSettings, False),
         "Tags": (Tags, False),
     }
 
@@ -2484,6 +2879,16 @@ class EndpointMetadata(AWSProperty):
         "EndpointConfigName": (str, False),
         "EndpointName": (str, True),
         "EndpointStatus": (str, False),
+    }
+
+
+class ModelAccessConfig(AWSProperty):
+    """
+    `ModelAccessConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-model-containerdefinition-modeldatasource-s3datasource-modelaccessconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "AcceptEula": (boolean, True),
     }
 
 

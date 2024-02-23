@@ -423,6 +423,7 @@ class InstanceRequirementsRequest(AWSProperty):
         "InstanceGenerations": ([str], False),
         "LocalStorage": (str, False),
         "LocalStorageTypes": ([str], False),
+        "MaxSpotPriceAsPercentageOfOptimalOnDemandPrice": (integer, False),
         "MemoryGiBPerVCpu": (MemoryGiBPerVCpuRequest, False),
         "MemoryMiB": (MemoryMiBRequest, False),
         "NetworkBandwidthGbps": (NetworkBandwidthGbpsRequest, False),
@@ -738,6 +739,7 @@ class IPAM(AWSObject):
         "Description": (str, False),
         "OperatingRegions": ([IpamOperatingRegion], False),
         "Tags": (Tags, False),
+        "Tier": (str, False),
     }
 
 
@@ -766,6 +768,19 @@ class ProvisionedCidr(AWSProperty):
     }
 
 
+class SourceResource(AWSProperty):
+    """
+    `SourceResource <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-ipampool-sourceresource.html>`__
+    """
+
+    props: PropsDictType = {
+        "ResourceId": (str, True),
+        "ResourceOwner": (str, True),
+        "ResourceRegion": (str, True),
+        "ResourceType": (str, True),
+    }
+
+
 class IPAMPool(AWSObject):
     """
     `IPAMPool <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-ipampool.html>`__
@@ -788,6 +803,7 @@ class IPAMPool(AWSObject):
         "PublicIpSource": (str, False),
         "PubliclyAdvertisable": (boolean, False),
         "SourceIpamPoolId": (str, False),
+        "SourceResource": (SourceResource, False),
         "Tags": (Tags, False),
     }
 
@@ -1312,6 +1328,7 @@ class InstanceRequirements(AWSProperty):
         "InstanceGenerations": ([str], False),
         "LocalStorage": (str, False),
         "LocalStorageTypes": ([str], False),
+        "MaxSpotPriceAsPercentageOfOptimalOnDemandPrice": (integer, False),
         "MemoryGiBPerVCpu": (MemoryGiBPerVCpu, False),
         "MemoryMiB": (MemoryMiB, False),
         "NetworkBandwidthGbps": (NetworkBandwidthGbps, False),
@@ -1365,6 +1382,7 @@ class MaintenanceOptions(AWSProperty):
 
     props: PropsDictType = {
         "AutoRecovery": (str, False),
+        "RebootMigration": (str, False),
     }
 
 
@@ -1389,6 +1407,39 @@ class Monitoring(AWSProperty):
 
     props: PropsDictType = {
         "Enabled": (boolean, False),
+    }
+
+
+class ConnectionTrackingSpecification(AWSProperty):
+    """
+    `ConnectionTrackingSpecification <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-networkinterface-connectiontrackingspecification.html>`__
+    """
+
+    props: PropsDictType = {
+        "TcpEstablishedTimeout": (integer, False),
+        "UdpStreamTimeout": (integer, False),
+        "UdpTimeout": (integer, False),
+    }
+
+
+class EnaSrdUdpSpecification(AWSProperty):
+    """
+    `EnaSrdUdpSpecification <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-launchtemplate-enasrdudpspecification.html>`__
+    """
+
+    props: PropsDictType = {
+        "EnaSrdUdpEnabled": (boolean, False),
+    }
+
+
+class EnaSrdSpecification(AWSProperty):
+    """
+    `EnaSrdSpecification <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-launchtemplate-enasrdspecification.html>`__
+    """
+
+    props: PropsDictType = {
+        "EnaSrdEnabled": (boolean, False),
+        "EnaSrdUdpSpecification": (EnaSrdUdpSpecification, False),
     }
 
 
@@ -1430,9 +1481,11 @@ class NetworkInterfaces(AWSProperty):
     props: PropsDictType = {
         "AssociateCarrierIpAddress": (boolean, False),
         "AssociatePublicIpAddress": (boolean, False),
+        "ConnectionTrackingSpecification": (ConnectionTrackingSpecification, False),
         "DeleteOnTermination": (boolean, False),
         "Description": (str, False),
         "DeviceIndex": (integer, False),
+        "EnaSrdSpecification": (EnaSrdSpecification, False),
         "Groups": ([str], False),
         "InterfaceType": (str, False),
         "Ipv4PrefixCount": (integer, False),
@@ -1623,7 +1676,7 @@ class PortRange(AWSProperty):
 
 class NetworkAclEntry(AWSObject):
     """
-    `NetworkAclEntry <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-network-acl-entry.html>`__
+    `NetworkAclEntry <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-networkaclentry.html>`__
     """
 
     resource_type = "AWS::EC2::NetworkAclEntry"
@@ -1798,6 +1851,7 @@ class NetworkInterface(AWSObject):
     resource_type = "AWS::EC2::NetworkInterface"
 
     props: PropsDictType = {
+        "ConnectionTrackingSpecification": (ConnectionTrackingSpecification, False),
         "Description": (str, False),
         "GroupSet": ([str], False),
         "InterfaceType": (str, False),
@@ -1896,7 +1950,7 @@ class PrefixList(AWSObject):
     props: PropsDictType = {
         "AddressFamily": (str, True),
         "Entries": ([Entry], False),
-        "MaxEntries": (integer, True),
+        "MaxEntries": (integer, False),
         "PrefixListName": (str, True),
         "Tags": (Tags, False),
     }
@@ -1911,6 +1965,7 @@ class Route(AWSObject):
 
     props: PropsDictType = {
         "CarrierGatewayId": (str, False),
+        "CoreNetworkArn": (str, False),
         "DestinationCidrBlock": (str, False),
         "DestinationIpv6CidrBlock": (str, False),
         "DestinationPrefixListId": (str, False),
@@ -1962,7 +2017,7 @@ class SecurityGroup(AWSObject):
 
 class SecurityGroupEgress(AWSObject):
     """
-    `SecurityGroupEgress <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-security-group-egress.html>`__
+    `SecurityGroupEgress <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-securitygroupegress.html>`__
     """
 
     resource_type = "AWS::EC2::SecurityGroupEgress"
@@ -1985,7 +2040,7 @@ class SecurityGroupEgress(AWSObject):
 
 class SecurityGroupIngress(AWSObject):
     """
-    `SecurityGroupIngress <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-security-group-ingress.html>`__
+    `SecurityGroupIngress <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-securitygroupingress.html>`__
     """
 
     resource_type = "AWS::EC2::SecurityGroupIngress"
@@ -2007,6 +2062,18 @@ class SecurityGroupIngress(AWSObject):
 
     def validate(self):
         validate_security_group_ingress(self)
+
+
+class SnapshotBlockPublicAccess(AWSObject):
+    """
+    `SnapshotBlockPublicAccess <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-snapshotblockpublicaccess.html>`__
+    """
+
+    resource_type = "AWS::EC2::SnapshotBlockPublicAccess"
+
+    props: PropsDictType = {
+        "State": (str, True),
+    }
 
 
 class IamInstanceProfileSpecification(AWSProperty):
@@ -2282,8 +2349,13 @@ class Subnet(AWSObject):
         "AvailabilityZoneId": (str, False),
         "CidrBlock": (str, False),
         "EnableDns64": (boolean, False),
+        "Ipv4IpamPoolId": (str, False),
+        "Ipv4NetmaskLength": (integer, False),
         "Ipv6CidrBlock": (str, False),
+        "Ipv6CidrBlocks": ([str], False),
+        "Ipv6IpamPoolId": (str, False),
         "Ipv6Native": (boolean, False),
+        "Ipv6NetmaskLength": (integer, False),
         "MapPublicIpOnLaunch": (boolean, False),
         "OutpostArn": (str, False),
         "PrivateDnsNameOptionsOnLaunch": (PrivateDnsNameOptionsOnLaunch, False),
@@ -2303,14 +2375,16 @@ class SubnetCidrBlock(AWSObject):
     resource_type = "AWS::EC2::SubnetCidrBlock"
 
     props: PropsDictType = {
-        "Ipv6CidrBlock": (str, True),
+        "Ipv6CidrBlock": (str, False),
+        "Ipv6IpamPoolId": (str, False),
+        "Ipv6NetmaskLength": (integer, False),
         "SubnetId": (str, True),
     }
 
 
 class SubnetNetworkAclAssociation(AWSObject):
     """
-    `SubnetNetworkAclAssociation <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-subnet-network-acl-assoc.html>`__
+    `SubnetNetworkAclAssociation <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-subnetnetworkaclassociation.html>`__
     """
 
     resource_type = "AWS::EC2::SubnetNetworkAclAssociation"
@@ -2750,7 +2824,7 @@ class VPCEndpointServicePermissions(AWSObject):
 
 class VPCGatewayAttachment(AWSObject):
     """
-    `VPCGatewayAttachment <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-vpc-gateway-attachment.html>`__
+    `VPCGatewayAttachment <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-vpcgatewayattachment.html>`__
     """
 
     resource_type = "AWS::EC2::VPCGatewayAttachment"
@@ -2876,6 +2950,17 @@ class NetworkInterfaceOptions(AWSProperty):
     }
 
 
+class SseSpecification(AWSProperty):
+    """
+    `SseSpecification <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-verifiedaccesstrustprovider-ssespecification.html>`__
+    """
+
+    props: PropsDictType = {
+        "CustomerManagedKeyEnabled": (boolean, False),
+        "KmsKeyArn": (str, False),
+    }
+
+
 class VerifiedAccessEndpoint(AWSObject):
     """
     `VerifiedAccessEndpoint <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-verifiedaccessendpoint.html>`__
@@ -2895,6 +2980,7 @@ class VerifiedAccessEndpoint(AWSObject):
         "PolicyDocument": (str, False),
         "PolicyEnabled": (boolean, False),
         "SecurityGroupIds": ([str], False),
+        "SseSpecification": (SseSpecification, False),
         "Tags": (Tags, False),
         "VerifiedAccessGroupId": (str, True),
     }
@@ -2911,6 +2997,7 @@ class VerifiedAccessGroup(AWSObject):
         "Description": (str, False),
         "PolicyDocument": (str, False),
         "PolicyEnabled": (boolean, False),
+        "SseSpecification": (SseSpecification, False),
         "Tags": (Tags, False),
         "VerifiedAccessInstanceId": (str, True),
     }
@@ -2988,6 +3075,7 @@ class VerifiedAccessInstance(AWSObject):
 
     props: PropsDictType = {
         "Description": (str, False),
+        "FipsEnabled": (boolean, False),
         "LoggingConfigurations": (VerifiedAccessLogs, False),
         "Tags": (Tags, False),
         "VerifiedAccessTrustProviderIds": ([str], False),
@@ -3001,6 +3089,7 @@ class DeviceOptions(AWSProperty):
     """
 
     props: PropsDictType = {
+        "PublicSigningKeyUrl": (str, False),
         "TenantId": (str, False),
     }
 
@@ -3034,6 +3123,7 @@ class VerifiedAccessTrustProvider(AWSObject):
         "DeviceTrustProviderType": (str, False),
         "OidcOptions": (OidcOptions, False),
         "PolicyReferenceName": (str, True),
+        "SseSpecification": (SseSpecification, False),
         "Tags": (Tags, False),
         "TrustProviderType": (str, True),
         "UserTrustProviderType": (str, False),
