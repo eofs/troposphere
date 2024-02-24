@@ -39,7 +39,7 @@ class IdentitySource(AWSObject):
 
     props: PropsDictType = {
         "Configuration": (IdentitySourceConfiguration, True),
-        "PolicyStoreId": (str, False),
+        "PolicyStoreId": (str, True),
         "PrincipalEntityType": (str, False),
     }
 
@@ -98,7 +98,7 @@ class Policy(AWSObject):
 
     props: PropsDictType = {
         "Definition": (PolicyDefinition, True),
-        "PolicyStoreId": (str, False),
+        "PolicyStoreId": (str, True),
     }
 
 
@@ -130,6 +130,7 @@ class PolicyStore(AWSObject):
     resource_type = "AWS::VerifiedPermissions::PolicyStore"
 
     props: PropsDictType = {
+        "Description": (str, False),
         "Schema": (SchemaDefinition, False),
         "ValidationSettings": (ValidationSettings, True),
     }
@@ -144,7 +145,7 @@ class PolicyTemplate(AWSObject):
 
     props: PropsDictType = {
         "Description": (str, False),
-        "PolicyStoreId": (str, False),
+        "PolicyStoreId": (str, True),
         "Statement": (str, True),
     }
 

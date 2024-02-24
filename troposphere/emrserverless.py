@@ -31,6 +31,18 @@ class AutoStopConfiguration(AWSProperty):
     }
 
 
+class ConfigurationObject(AWSProperty):
+    """
+    `ConfigurationObject <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-emrserverless-application-configurationobject.html>`__
+    """
+
+    props: PropsDictType = {
+        "Classification": (str, True),
+        "Configurations": ([ConfigurationObject], False),
+        "Properties": (dict, False),
+    }
+
+
 class ImageConfigurationInput(AWSProperty):
     """
     `ImageConfigurationInput <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-emrserverless-application-imageconfigurationinput.html>`__
@@ -87,6 +99,68 @@ class MaximumAllowedResources(AWSProperty):
     }
 
 
+class LogTypeMapKeyValuePair(AWSProperty):
+    """
+    `LogTypeMapKeyValuePair <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-emrserverless-application-logtypemapkeyvaluepair.html>`__
+    """
+
+    props: PropsDictType = {
+        "Key": (str, True),
+        "Value": ([str], True),
+    }
+
+
+class CloudWatchLoggingConfiguration(AWSProperty):
+    """
+    `CloudWatchLoggingConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-emrserverless-application-cloudwatchloggingconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "Enabled": (boolean, False),
+        "EncryptionKeyArn": (str, False),
+        "LogGroupName": (str, False),
+        "LogStreamNamePrefix": (str, False),
+        "LogTypeMap": ([LogTypeMapKeyValuePair], False),
+    }
+
+
+class ManagedPersistenceMonitoringConfiguration(AWSProperty):
+    """
+    `ManagedPersistenceMonitoringConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-emrserverless-application-managedpersistencemonitoringconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "Enabled": (boolean, False),
+        "EncryptionKeyArn": (str, False),
+    }
+
+
+class S3MonitoringConfiguration(AWSProperty):
+    """
+    `S3MonitoringConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-emrserverless-application-s3monitoringconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "EncryptionKeyArn": (str, False),
+        "LogUri": (str, False),
+    }
+
+
+class MonitoringConfiguration(AWSProperty):
+    """
+    `MonitoringConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-emrserverless-application-monitoringconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "CloudWatchLoggingConfiguration": (CloudWatchLoggingConfiguration, False),
+        "ManagedPersistenceMonitoringConfiguration": (
+            ManagedPersistenceMonitoringConfiguration,
+            False,
+        ),
+        "S3MonitoringConfiguration": (S3MonitoringConfiguration, False),
+    }
+
+
 class NetworkConfiguration(AWSProperty):
     """
     `NetworkConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-emrserverless-application-networkconfiguration.html>`__
@@ -122,9 +196,11 @@ class Application(AWSObject):
         "ImageConfiguration": (ImageConfigurationInput, False),
         "InitialCapacity": ([InitialCapacityConfigKeyValuePair], False),
         "MaximumCapacity": (MaximumAllowedResources, False),
+        "MonitoringConfiguration": (MonitoringConfiguration, False),
         "Name": (str, False),
         "NetworkConfiguration": (NetworkConfiguration, False),
         "ReleaseLabel": (str, True),
+        "RuntimeConfiguration": ([ConfigurationObject], False),
         "Tags": (Tags, False),
         "Type": (str, True),
         "WorkerTypeSpecifications": (dict, False),

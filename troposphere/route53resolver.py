@@ -39,6 +39,7 @@ class FirewallRule(AWSProperty):
         "BlockResponse": (str, False),
         "FirewallDomainListId": (str, True),
         "Priority": (integer, True),
+        "Qtype": (str, False),
     }
 
 
@@ -139,6 +140,7 @@ class ResolverEndpoint(AWSObject):
         "Name": (str, False),
         "OutpostArn": (str, False),
         "PreferredInstanceType": (str, False),
+        "Protocols": ([str], False),
         "ResolverEndpointType": (str, False),
         "SecurityGroupIds": ([str], True),
         "Tags": (Tags, False),
@@ -180,6 +182,7 @@ class TargetAddress(AWSProperty):
         "Ip": (str, False),
         "Ipv6": (str, False),
         "Port": (str, False),
+        "Protocol": (str, False),
     }
 
 

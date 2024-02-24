@@ -120,6 +120,7 @@ class DBCluster(AWSObject):
         "Domain": (str, False),
         "DomainIAMRoleName": (str, False),
         "EnableCloudwatchLogsExports": ([str], False),
+        "EnableGlobalWriteForwarding": (boolean, False),
         "EnableHttpEndpoint": (boolean, False),
         "EnableIAMDatabaseAuthentication": (boolean, False),
         "Engine": (validate_engine, False),
@@ -249,6 +250,7 @@ class DBInstance(AWSObject):
         "DBSecurityGroups": (list, False),
         "DBSnapshotIdentifier": (str, False),
         "DBSubnetGroupName": (str, False),
+        "DedicatedLogVolume": (boolean, False),
         "DeleteAutomatedBackups": (boolean, False),
         "DeletionProtection": (boolean, False),
         "Domain": (str, False),
@@ -498,6 +500,23 @@ class GlobalCluster(AWSObject):
         "GlobalClusterIdentifier": (str, False),
         "SourceDBClusterIdentifier": (str, False),
         "StorageEncrypted": (boolean, False),
+    }
+
+
+class Integration(AWSObject):
+    """
+    `Integration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-rds-integration.html>`__
+    """
+
+    resource_type = "AWS::RDS::Integration"
+
+    props: PropsDictType = {
+        "AdditionalEncryptionContext": (dict, False),
+        "IntegrationName": (str, False),
+        "KMSKeyId": (str, False),
+        "SourceArn": (str, True),
+        "Tags": (Tags, False),
+        "TargetArn": (str, True),
     }
 
 

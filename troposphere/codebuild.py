@@ -25,6 +25,22 @@ from .validators.codebuild import (
 )
 
 
+class Fleet(AWSObject):
+    """
+    `Fleet <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codebuild-fleet.html>`__
+    """
+
+    resource_type = "AWS::CodeBuild::Fleet"
+
+    props: PropsDictType = {
+        "BaseCapacity": (integer, False),
+        "ComputeType": (str, False),
+        "EnvironmentType": (str, False),
+        "Name": (str, False),
+        "Tags": (Tags, False),
+    }
+
+
 class Artifacts(AWSProperty):
     """
     `Artifacts <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-codebuild-project-artifacts.html>`__
@@ -61,6 +77,16 @@ class EnvironmentVariable(AWSProperty):
         validate_environment_variable(self)
 
 
+class ProjectFleet(AWSProperty):
+    """
+    `ProjectFleet <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-codebuild-project-projectfleet.html>`__
+    """
+
+    props: PropsDictType = {
+        "FleetArn": (str, False),
+    }
+
+
 class RegistryCredential(AWSProperty):
     """
     `RegistryCredential <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-codebuild-project-registrycredential.html>`__
@@ -81,6 +107,7 @@ class Environment(AWSProperty):
         "Certificate": (str, False),
         "ComputeType": (str, True),
         "EnvironmentVariables": (validate_environmentvariable_or_list, False),
+        "Fleet": (ProjectFleet, False),
         "Image": (str, True),
         "ImagePullCredentialsType": (validate_image_pull_credentials, False),
         "PrivilegedMode": (boolean, False),

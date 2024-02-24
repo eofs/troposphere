@@ -331,6 +331,7 @@ class JobFlowInstancesConfig(AWSProperty):
         "TaskInstanceGroup": ([InstanceGroupConfigProperty], False),
         "TaskInstanceGroups": ([InstanceGroupConfigProperty], False),
         "TerminationProtected": (boolean, False),
+        "UnhealthyNodeReplacement": (boolean, False),
     }
 
 
@@ -372,9 +373,20 @@ class ManagedScalingPolicy(AWSProperty):
     }
 
 
+class PlacementGroupConfig(AWSProperty):
+    """
+    `PlacementGroupConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-elasticmapreduce-cluster-placementgroupconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "InstanceRole": (str, True),
+        "PlacementStrategy": (str, False),
+    }
+
+
 class HadoopJarStepConfig(AWSProperty):
     """
-    `HadoopJarStepConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-elasticmapreduce-step-hadoopjarstepconfig.html>`__
+    `HadoopJarStepConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-emr-step-hadoopjarstepconfig.html>`__
     """
 
     props: PropsDictType = {
@@ -412,7 +424,9 @@ class Cluster(AWSObject):
         "BootstrapActions": ([BootstrapActionConfig], False),
         "Configurations": ([Configuration], False),
         "CustomAmiId": (str, False),
+        "EbsRootVolumeIops": (integer, False),
         "EbsRootVolumeSize": (integer, False),
+        "EbsRootVolumeThroughput": (integer, False),
         "Instances": (JobFlowInstancesConfig, True),
         "JobFlowRole": (str, True),
         "KerberosAttributes": (KerberosAttributes, False),
@@ -421,6 +435,7 @@ class Cluster(AWSObject):
         "ManagedScalingPolicy": (ManagedScalingPolicy, False),
         "Name": (str, True),
         "OSReleaseLabel": (str, False),
+        "PlacementGroupConfigs": ([PlacementGroupConfig], False),
         "ReleaseLabel": (str, False),
         "ScaleDownBehavior": (str, False),
         "SecurityConfiguration": (str, False),
@@ -511,13 +526,17 @@ class Studio(AWSObject):
         "AuthMode": (str, True),
         "DefaultS3Location": (str, True),
         "Description": (str, False),
+        "EncryptionKeyArn": (str, False),
         "EngineSecurityGroupId": (str, True),
+        "IdcInstanceArn": (str, False),
+        "IdcUserAssignment": (str, False),
         "IdpAuthUrl": (str, False),
         "IdpRelayStateParameterName": (str, False),
         "Name": (str, True),
         "ServiceRole": (str, True),
         "SubnetIds": ([str], True),
         "Tags": (Tags, False),
+        "TrustedIdentityPropagationEnabled": (boolean, False),
         "UserRole": (str, False),
         "VpcId": (str, True),
         "WorkspaceSecurityGroupId": (str, True),

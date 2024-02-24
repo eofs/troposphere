@@ -162,6 +162,17 @@ class AnalysisDefaults(AWSProperty):
     }
 
 
+class AssetOptions(AWSProperty):
+    """
+    `AssetOptions <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-template-assetoptions.html>`__
+    """
+
+    props: PropsDictType = {
+        "Timezone": (str, False),
+        "WeekStart": (str, False),
+    }
+
+
 class CalculatedField(AWSProperty):
     """
     `CalculatedField <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-template-calculatedfield.html>`__
@@ -429,6 +440,7 @@ class FilterListConfiguration(AWSProperty):
     props: PropsDictType = {
         "CategoryValues": ([str], False),
         "MatchOperator": (str, True),
+        "NullOption": (str, False),
         "SelectAllOptions": (str, False),
     }
 
@@ -590,6 +602,17 @@ class RelativeDatesFilter(AWSProperty):
     }
 
 
+class RollingDateConfiguration(AWSProperty):
+    """
+    `RollingDateConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-template-rollingdateconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "DataSetIdentifier": (str, False),
+        "Expression": (str, True),
+    }
+
+
 class TimeEqualityFilter(AWSProperty):
     """
     `TimeEqualityFilter <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-template-timeequalityfilter.html>`__
@@ -599,19 +622,9 @@ class TimeEqualityFilter(AWSProperty):
         "Column": (ColumnIdentifier, True),
         "FilterId": (str, True),
         "ParameterName": (str, False),
+        "RollingDate": (RollingDateConfiguration, False),
         "TimeGranularity": (str, False),
         "Value": (str, False),
-    }
-
-
-class RollingDateConfiguration(AWSProperty):
-    """
-    `RollingDateConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-template-rollingdateconfiguration.html>`__
-    """
-
-    props: PropsDictType = {
-        "DataSetIdentifier": (str, False),
-        "Expression": (str, True),
     }
 
 
@@ -2132,6 +2145,7 @@ class ReferenceLineDataConfiguration(AWSProperty):
     props: PropsDictType = {
         "AxisBinding": (str, False),
         "DynamicConfiguration": (ReferenceLineDynamicDataConfiguration, False),
+        "SeriesType": (str, False),
         "StaticConfiguration": (ReferenceLineStaticDataConfiguration, False),
     }
 
@@ -2311,14 +2325,25 @@ class TooltipOptions(AWSProperty):
     }
 
 
+class DataPathType(AWSProperty):
+    """
+    `DataPathType <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-template-datapathtype.html>`__
+    """
+
+    props: PropsDictType = {
+        "PivotTableDataPathType": (str, False),
+    }
+
+
 class DataPathValue(AWSProperty):
     """
     `DataPathValue <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-template-datapathvalue.html>`__
     """
 
     props: PropsDictType = {
-        "FieldId": (str, True),
-        "FieldValue": (str, True),
+        "DataPathType": (DataPathType, False),
+        "FieldId": (str, False),
+        "FieldValue": (str, False),
     }
 
 
@@ -4725,6 +4750,27 @@ class PivotTableSortConfiguration(AWSProperty):
     }
 
 
+class TotalAggregationFunction(AWSProperty):
+    """
+    `TotalAggregationFunction <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-template-totalaggregationfunction.html>`__
+    """
+
+    props: PropsDictType = {
+        "SimpleTotalAggregationFunction": (str, False),
+    }
+
+
+class TotalAggregationOption(AWSProperty):
+    """
+    `TotalAggregationOption <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-template-totalaggregationoption.html>`__
+    """
+
+    props: PropsDictType = {
+        "FieldId": (str, True),
+        "TotalAggregationFunction": (TotalAggregationFunction, True),
+    }
+
+
 class PivotTotalOptions(AWSProperty):
     """
     `PivotTotalOptions <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-template-pivottotaloptions.html>`__
@@ -4735,6 +4781,7 @@ class PivotTotalOptions(AWSProperty):
         "MetricHeaderCellStyle": (TableCellStyle, False),
         "Placement": (str, False),
         "ScrollStatus": (str, False),
+        "TotalAggregationOptions": ([TotalAggregationOption], False),
         "TotalCellStyle": (TableCellStyle, False),
         "TotalsVisibility": (str, False),
         "ValueCellStyle": (TableCellStyle, False),
@@ -5313,6 +5360,7 @@ class TotalOptions(AWSProperty):
         "CustomLabel": (str, False),
         "Placement": (str, False),
         "ScrollStatus": (str, False),
+        "TotalAggregationOptions": ([TotalAggregationOption], False),
         "TotalCellStyle": (TableCellStyle, False),
         "TotalsVisibility": (str, False),
     }
@@ -5633,8 +5681,31 @@ class AnalysisDefinition(AWSProperty):
         "ColumnConfigurations": ([ColumnConfiguration], False),
         "DataSetIdentifierDeclarations": ([DataSetIdentifierDeclaration], True),
         "FilterGroups": ([FilterGroup], False),
+        "Options": (AssetOptions, False),
         "ParameterDeclarations": ([ParameterDeclaration], False),
         "Sheets": ([SheetDefinition], False),
+    }
+
+
+class Entity(AWSProperty):
+    """
+    `Entity <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-template-entity.html>`__
+    """
+
+    props: PropsDictType = {
+        "Path": (str, False),
+    }
+
+
+class AnalysisError(AWSProperty):
+    """
+    `AnalysisError <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-analysis-analysiserror.html>`__
+    """
+
+    props: PropsDictType = {
+        "Message": (str, False),
+        "Type": (str, False),
+        "ViolatedEntities": ([Entity], False),
     }
 
 
@@ -5735,7 +5806,27 @@ class ResourcePermission(AWSProperty):
     props: PropsDictType = {
         "Actions": ([str], True),
         "Principal": (str, True),
-        "Resource": (str, False),
+    }
+
+
+class Sheet(AWSProperty):
+    """
+    `Sheet <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-template-sheet.html>`__
+    """
+
+    props: PropsDictType = {
+        "Name": (str, False),
+        "SheetId": (str, False),
+    }
+
+
+class ValidationStrategy(AWSProperty):
+    """
+    `ValidationStrategy <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-template-validationstrategy.html>`__
+    """
+
+    props: PropsDictType = {
+        "Mode": (str, True),
     }
 
 
@@ -5750,13 +5841,16 @@ class Analysis(AWSObject):
         "AnalysisId": (str, True),
         "AwsAccountId": (str, True),
         "Definition": (AnalysisDefinition, False),
+        "Errors": ([AnalysisError], False),
         "Name": (str, True),
         "Parameters": (Parameters, False),
         "Permissions": ([ResourcePermission], False),
+        "Sheets": ([Sheet], False),
         "SourceEntity": (AnalysisSourceEntity, False),
         "Status": (str, False),
         "Tags": (Tags, False),
         "ThemeArn": (str, False),
+        "ValidationStrategy": (ValidationStrategy, False),
     }
 
 
@@ -5935,8 +6029,19 @@ class DashboardVersionDefinition(AWSProperty):
         "ColumnConfigurations": ([ColumnConfiguration], False),
         "DataSetIdentifierDeclarations": ([DataSetIdentifierDeclaration], True),
         "FilterGroups": ([FilterGroup], False),
+        "Options": (AssetOptions, False),
         "ParameterDeclarations": ([ParameterDeclaration], False),
         "Sheets": ([SheetDefinition], False),
+    }
+
+
+class LinkSharingConfiguration(AWSProperty):
+    """
+    `LinkSharingConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-dashboard-linksharingconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "Permissions": ([ResourcePermission], False),
     }
 
 
@@ -5952,12 +6057,14 @@ class Dashboard(AWSObject):
         "DashboardId": (str, True),
         "DashboardPublishOptions": (DashboardPublishOptions, False),
         "Definition": (DashboardVersionDefinition, False),
+        "LinkSharingConfiguration": (LinkSharingConfiguration, False),
         "Name": (str, True),
         "Parameters": (Parameters, False),
         "Permissions": ([ResourcePermission], False),
         "SourceEntity": (DashboardSourceEntity, False),
         "Tags": (Tags, False),
         "ThemeArn": (str, False),
+        "ValidationStrategy": (ValidationStrategy, False),
         "VersionDescription": (str, False),
     }
 
@@ -6222,6 +6329,7 @@ class CastColumnTypeOperation(AWSProperty):
         "ColumnName": (str, True),
         "Format": (str, False),
         "NewColumnType": (str, True),
+        "SubType": (str, False),
     }
 
 
@@ -6370,6 +6478,7 @@ class InputColumn(AWSProperty):
 
     props: PropsDictType = {
         "Name": (str, True),
+        "SubType": (str, False),
         "Type": (str, True),
     }
 
@@ -6717,6 +6826,19 @@ class SqlServerParameters(AWSProperty):
     }
 
 
+class StarburstParameters(AWSProperty):
+    """
+    `StarburstParameters <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-datasource-starburstparameters.html>`__
+    """
+
+    props: PropsDictType = {
+        "Catalog": (str, True),
+        "Host": (str, True),
+        "Port": (double, True),
+        "ProductType": (str, False),
+    }
+
+
 class TeradataParameters(AWSProperty):
     """
     `TeradataParameters <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-datasource-teradataparameters.html>`__
@@ -6724,6 +6846,18 @@ class TeradataParameters(AWSProperty):
 
     props: PropsDictType = {
         "Database": (str, True),
+        "Host": (str, True),
+        "Port": (double, True),
+    }
+
+
+class TrinoParameters(AWSProperty):
+    """
+    `TrinoParameters <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-datasource-trinoparameters.html>`__
+    """
+
+    props: PropsDictType = {
+        "Catalog": (str, True),
         "Host": (str, True),
         "Port": (double, True),
     }
@@ -6752,7 +6886,9 @@ class DataSourceParameters(AWSProperty):
         "SnowflakeParameters": (SnowflakeParameters, False),
         "SparkParameters": (SparkParameters, False),
         "SqlServerParameters": (SqlServerParameters, False),
+        "StarburstParameters": (StarburstParameters, False),
         "TeradataParameters": (TeradataParameters, False),
+        "TrinoParameters": (TrinoParameters, False),
     }
 
 
@@ -6983,6 +7119,7 @@ class TemplateVersionDefinition(AWSProperty):
         "ColumnConfigurations": ([ColumnConfiguration], False),
         "DataSetConfigurations": ([DataSetConfiguration], True),
         "FilterGroups": ([FilterGroup], False),
+        "Options": (AssetOptions, False),
         "ParameterDeclarations": ([ParameterDeclaration], False),
         "Sheets": ([SheetDefinition], False),
     }
@@ -7003,6 +7140,7 @@ class Template(AWSObject):
         "SourceEntity": (TemplateSourceEntity, False),
         "Tags": (Tags, False),
         "TemplateId": (str, True),
+        "ValidationStrategy": (ValidationStrategy, False),
         "VersionDescription": (str, False),
     }
 
@@ -7269,6 +7407,7 @@ class TopicCalculatedField(AWSProperty):
         "Expression": (str, True),
         "IsIncludedInTopic": (boolean, False),
         "NeverAggregateInFilter": (boolean, False),
+        "NonAdditive": (boolean, False),
         "NotAllowedAggregations": ([str], False),
         "SemanticType": (SemanticType, False),
         "TimeGranularity": (str, False),
@@ -7293,6 +7432,7 @@ class TopicColumn(AWSProperty):
         "DefaultFormatting": (DefaultFormatting, False),
         "IsIncludedInTopic": (boolean, False),
         "NeverAggregateInFilter": (boolean, False),
+        "NonAdditive": (boolean, False),
         "NotAllowedAggregations": ([str], False),
         "SemanticType": (SemanticType, False),
         "TimeGranularity": (str, False),
@@ -7514,6 +7654,7 @@ class Topic(AWSObject):
         "Description": (str, False),
         "Name": (str, False),
         "TopicId": (str, False),
+        "UserExperienceVersion": (str, False),
     }
 
 
@@ -7534,28 +7675,6 @@ class VPCConnection(AWSObject):
         "SubnetIds": ([str], False),
         "Tags": (Tags, False),
         "VPCConnectionId": (str, False),
-    }
-
-
-class Entity(AWSProperty):
-    """
-    `Entity <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-template-entity.html>`__
-    """
-
-    props: PropsDictType = {
-        "Path": (str, False),
-    }
-
-
-class AnalysisError(AWSProperty):
-    """
-    `AnalysisError <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-analysis-analysiserror.html>`__
-    """
-
-    props: PropsDictType = {
-        "Message": (str, False),
-        "Type": (str, False),
-        "ViolatedEntities": ([Entity], False),
     }
 
 
@@ -7582,17 +7701,6 @@ class NetworkInterface(AWSProperty):
         "NetworkInterfaceId": (str, False),
         "Status": (str, False),
         "SubnetId": (str, False),
-    }
-
-
-class Sheet(AWSProperty):
-    """
-    `Sheet <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-template-sheet.html>`__
-    """
-
-    props: PropsDictType = {
-        "Name": (str, False),
-        "SheetId": (str, False),
     }
 
 

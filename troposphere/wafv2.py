@@ -38,30 +38,6 @@ class IPSet(AWSObject):
     }
 
 
-class JsonMatchPattern(AWSProperty):
-    """
-    `JsonMatchPattern <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-wafv2-webacl-jsonmatchpattern.html>`__
-    """
-
-    props: PropsDictType = {
-        "All": (dict, False),
-        "IncludedPaths": ([str], False),
-    }
-
-
-class JsonBody(AWSProperty):
-    """
-    `JsonBody <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-wafv2-webacl-jsonbody.html>`__
-    """
-
-    props: PropsDictType = {
-        "InvalidFallbackBehavior": (str, False),
-        "MatchPattern": (JsonMatchPattern, True),
-        "MatchScope": (str, True),
-        "OversizeHandling": (str, False),
-    }
-
-
 class SingleHeader(AWSProperty):
     """
     `SingleHeader <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-wafv2-webacl-singleheader.html>`__
@@ -78,7 +54,6 @@ class LoggingConfigurationFieldToMatch(AWSProperty):
     """
 
     props: PropsDictType = {
-        "JsonBody": (JsonBody, False),
         "Method": (dict, False),
         "QueryString": (dict, False),
         "SingleHeader": (SingleHeader, False),
@@ -397,6 +372,30 @@ class Headers(AWSProperty):
     }
 
 
+class JsonMatchPattern(AWSProperty):
+    """
+    `JsonMatchPattern <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-wafv2-webacl-jsonmatchpattern.html>`__
+    """
+
+    props: PropsDictType = {
+        "All": (dict, False),
+        "IncludedPaths": ([str], False),
+    }
+
+
+class JsonBody(AWSProperty):
+    """
+    `JsonBody <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-wafv2-webacl-jsonbody.html>`__
+    """
+
+    props: PropsDictType = {
+        "InvalidFallbackBehavior": (str, False),
+        "MatchPattern": (JsonMatchPattern, True),
+        "MatchScope": (str, True),
+        "OversizeHandling": (str, False),
+    }
+
+
 class SingleQueryArgument(AWSProperty):
     """
     `SingleQueryArgument <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-wafv2-webacl-singlequeryargument.html>`__
@@ -646,6 +645,7 @@ class AWSManagedRulesBotControlRuleSet(AWSProperty):
     """
 
     props: PropsDictType = {
+        "EnableMachineLearning": (boolean, False),
         "InspectionLevel": (str, True),
     }
 
@@ -1047,15 +1047,4 @@ class WebACLAssociation(AWSObject):
     props: PropsDictType = {
         "ResourceArn": (str, True),
         "WebACLArn": (str, True),
-    }
-
-
-class MatchPattern(AWSProperty):
-    """
-    `MatchPattern <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-wafv2-loggingconfiguration-matchpattern.html>`__
-    """
-
-    props: PropsDictType = {
-        "All": (dict, False),
-        "IncludedPaths": ([str], False),
     }
