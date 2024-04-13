@@ -204,16 +204,6 @@ class ClientLoginBannerOptions(AWSProperty):
     }
 
 
-class ClientRouteMonitoringOptions(AWSProperty):
-    """
-    `ClientRouteMonitoringOptions <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-clientvpnendpoint-clientroutemonitoringoptions.html>`__
-    """
-
-    props: PropsDictType = {
-        "Enabled": (boolean, False),
-    }
-
-
 class ConnectionLogOptions(AWSProperty):
     """
     `ConnectionLogOptions <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-clientvpnendpoint-connectionlogoptions.html>`__
@@ -238,7 +228,6 @@ class ClientVpnEndpoint(AWSObject):
         "ClientCidrBlock": (str, True),
         "ClientConnectOptions": (ClientConnectOptions, False),
         "ClientLoginBannerOptions": (ClientLoginBannerOptions, False),
-        "ClientRouteMonitoringOptions": (ClientRouteMonitoringOptions, False),
         "ConnectionLogOptions": (ConnectionLogOptions, True),
         "Description": (str, False),
         "DnsServers": ([str], False),
@@ -291,6 +280,7 @@ class CustomerGateway(AWSObject):
 
     props: PropsDictType = {
         "BgpAsn": (integer, True),
+        "CertificateArn": (str, False),
         "DeviceName": (str, False),
         "IpAddress": (str, True),
         "Tags": (validate_tags_or_list, False),
@@ -308,6 +298,7 @@ class DHCPOptions(AWSObject):
     props: PropsDictType = {
         "DomainName": (str, False),
         "DomainNameServers": ([str], False),
+        "Ipv6AddressPreferredLeaseTime": (integer, False),
         "NetbiosNameServers": ([str], False),
         "NetbiosNodeType": (integer, False),
         "NtpServers": ([str], False),
@@ -434,6 +425,7 @@ class InstanceRequirementsRequest(AWSProperty):
         "InstanceGenerations": ([str], False),
         "LocalStorage": (str, False),
         "LocalStorageTypes": ([str], False),
+        "MaxSpotPriceAsPercentageOfOptimalOnDemandPrice": (integer, False),
         "MemoryGiBPerVCpu": (MemoryGiBPerVCpuRequest, False),
         "MemoryMiB": (MemoryMiBRequest, False),
         "NetworkBandwidthGbps": (NetworkBandwidthGbpsRequest, False),
@@ -893,7 +885,7 @@ class EBSBlockDevice(AWSProperty):
 
 class BlockDeviceMapping(AWSProperty):
     """
-    `BlockDeviceMapping <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-blockdev-mapping.html>`__
+    `BlockDeviceMapping <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-instance-blockdevicemapping.html>`__
     """
 
     props: PropsDictType = {
@@ -1012,7 +1004,7 @@ class PrivateIpAddressSpecification(AWSProperty):
 
 class NetworkInterfaceProperty(AWSProperty):
     """
-    `NetworkInterfaceProperty <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-network-iface-embedded.html>`__
+    `NetworkInterfaceProperty <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-instance-networkinterface.html>`__
     """
 
     props: PropsDictType = {
@@ -1046,7 +1038,7 @@ class PrivateDnsNameOptions(AWSProperty):
 
 class AssociationParameters(AWSProperty):
     """
-    `AssociationParameters <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-instance-ssmassociations-associationparameters.html>`__
+    `AssociationParameters <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-instance-associationparameter.html>`__
     """
 
     props: PropsDictType = {
@@ -1057,7 +1049,7 @@ class AssociationParameters(AWSProperty):
 
 class SsmAssociations(AWSProperty):
     """
-    `SsmAssociations <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-instance-ssmassociations.html>`__
+    `SsmAssociations <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-instance-ssmassociation.html>`__
     """
 
     props: PropsDictType = {
@@ -1068,7 +1060,7 @@ class SsmAssociations(AWSProperty):
 
 class Instance(AWSObject):
     """
-    `Instance <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-instance.html>`__
+    `Instance <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-instance.html>`__
     """
 
     resource_type = "AWS::EC2::Instance"
@@ -1392,7 +1384,6 @@ class MaintenanceOptions(AWSProperty):
 
     props: PropsDictType = {
         "AutoRecovery": (str, False),
-        "RebootMigration": (str, False),
     }
 
 
@@ -1434,7 +1425,7 @@ class ConnectionTrackingSpecification(AWSProperty):
 
 class EnaSrdUdpSpecification(AWSProperty):
     """
-    `EnaSrdUdpSpecification <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-launchtemplate-enasrdudpspecification.html>`__
+    `EnaSrdUdpSpecification <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-networkinterfaceattachment-enasrdudpspecification.html>`__
     """
 
     props: PropsDictType = {
@@ -1444,7 +1435,7 @@ class EnaSrdUdpSpecification(AWSProperty):
 
 class EnaSrdSpecification(AWSProperty):
     """
-    `EnaSrdSpecification <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-launchtemplate-enasrdspecification.html>`__
+    `EnaSrdSpecification <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-networkinterfaceattachment-enasrdspecification.html>`__
     """
 
     props: PropsDictType = {
@@ -1890,6 +1881,7 @@ class NetworkInterfaceAttachment(AWSObject):
     props: PropsDictType = {
         "DeleteOnTermination": (boolean, False),
         "DeviceIndex": (validate_int_to_str, True),
+        "EnaSrdSpecification": (EnaSrdSpecification, False),
         "InstanceId": (str, True),
         "NetworkInterfaceId": (str, True),
     }
@@ -2010,7 +2002,7 @@ class RouteTable(AWSObject):
 
 class SecurityGroup(AWSObject):
     """
-    `SecurityGroup <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-security-group.html>`__
+    `SecurityGroup <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-securitygroup.html>`__
     """
 
     resource_type = "AWS::EC2::SecurityGroup"
@@ -2359,6 +2351,7 @@ class Subnet(AWSObject):
         "AvailabilityZoneId": (str, False),
         "CidrBlock": (str, False),
         "EnableDns64": (boolean, False),
+        "EnableLniAtDeviceIndex": (integer, False),
         "Ipv4IpamPoolId": (str, False),
         "Ipv4NetmaskLength": (integer, False),
         "Ipv6CidrBlock": (str, False),
@@ -3206,7 +3199,7 @@ class EbsBlockDevice(AWSProperty):
 
 class Egress(AWSProperty):
     """
-    `Egress <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-security-group-rule.html>`__
+    `Egress <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-securitygroup-egress.html>`__
     """
 
     props: PropsDictType = {
@@ -3223,7 +3216,7 @@ class Egress(AWSProperty):
 
 class Ingress(AWSProperty):
     """
-    `Ingress <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-security-group-rule.html>`__
+    `Ingress <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-securitygroup-ingress.html>`__
     """
 
     props: PropsDictType = {
@@ -3242,21 +3235,13 @@ class Ingress(AWSProperty):
 
 class MountPoint(AWSProperty):
     """
-    `MountPoint <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-mount-point.html>`__
+    `MountPoint <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-instance-volume.html>`__
     """
 
     props: PropsDictType = {
         "Device": (str, True),
         "VolumeId": (str, True),
     }
-
-
-class NoDevice(AWSProperty):
-    """
-    `NoDevice <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-instance-nodevice.html>`__
-    """
-
-    props: PropsDictType = {}
 
 
 class PeeringAttachmentStatus(AWSProperty):
@@ -3272,7 +3257,7 @@ class PeeringAttachmentStatus(AWSProperty):
 
 class SecurityGroupRule(AWSProperty):
     """
-    `SecurityGroupRule <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-security-group-rule.html>`__
+    `SecurityGroupRule <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-securitygroup-ingress.html>`__
     """
 
     props: PropsDictType = {
@@ -3309,7 +3294,7 @@ class TransitGatewayRouteTableRoute(AWSProperty):
 
 class VolumeProperty(AWSProperty):
     """
-    `VolumeProperty <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-mount-point.html>`__
+    `VolumeProperty <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-instance-volume.html>`__
     """
 
     props: PropsDictType = {

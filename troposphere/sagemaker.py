@@ -65,6 +65,16 @@ class ContainerConfig(AWSProperty):
     }
 
 
+class CodeEditorAppImageConfig(AWSProperty):
+    """
+    `CodeEditorAppImageConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-appimageconfig-codeeditorappimageconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "ContainerConfig": (ContainerConfig, False),
+    }
+
+
 class JupyterLabAppImageConfig(AWSProperty):
     """
     `JupyterLabAppImageConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-appimageconfig-jupyterlabappimageconfig.html>`__
@@ -118,6 +128,7 @@ class AppImageConfig(AWSObject):
 
     props: PropsDictType = {
         "AppImageConfigName": (str, True),
+        "CodeEditorAppImageConfig": (CodeEditorAppImageConfig, False),
         "JupyterLabAppImageConfig": (JupyterLabAppImageConfig, False),
         "KernelGatewayImageConfig": (KernelGatewayImageConfig, False),
         "Tags": (Tags, False),
@@ -521,6 +532,7 @@ class CodeEditorAppSettings(AWSProperty):
     """
 
     props: PropsDictType = {
+        "CustomImages": ([CustomImage], False),
         "DefaultResourceSpec": (ResourceSpec, False),
         "LifecycleConfigArns": ([str], False),
     }
@@ -1074,6 +1086,17 @@ class OnlineStoreSecurityConfig(AWSProperty):
     }
 
 
+class TtlDuration(AWSProperty):
+    """
+    `TtlDuration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-featuregroup-ttlduration.html>`__
+    """
+
+    props: PropsDictType = {
+        "Unit": (str, False),
+        "Value": (integer, False),
+    }
+
+
 class OnlineStoreConfig(AWSProperty):
     """
     `OnlineStoreConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sagemaker-featuregroup-onlinestoreconfig.html>`__
@@ -1083,6 +1106,7 @@ class OnlineStoreConfig(AWSProperty):
         "EnableOnlineStore": (boolean, False),
         "SecurityConfig": (OnlineStoreSecurityConfig, False),
         "StorageType": (str, False),
+        "TtlDuration": (TtlDuration, False),
     }
 
 

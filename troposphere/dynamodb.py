@@ -193,6 +193,26 @@ class ReplicaSSESpecification(AWSProperty):
     }
 
 
+class ResourcePolicy(AWSProperty):
+    """
+    `ResourcePolicy <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-dynamodb-table-resourcepolicy.html>`__
+    """
+
+    props: PropsDictType = {
+        "PolicyDocument": (dict, True),
+    }
+
+
+class ReplicaStreamSpecification(AWSProperty):
+    """
+    `ReplicaStreamSpecification <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-dynamodb-globaltable-replicastreamspecification.html>`__
+    """
+
+    props: PropsDictType = {
+        "ResourcePolicy": (ResourcePolicy, True),
+    }
+
+
 class ReplicaSpecification(AWSProperty):
     """
     `ReplicaSpecification <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-dynamodb-globaltable-replicaspecification.html>`__
@@ -206,19 +226,11 @@ class ReplicaSpecification(AWSProperty):
         "PointInTimeRecoverySpecification": (PointInTimeRecoverySpecification, False),
         "ReadProvisionedThroughputSettings": (ReadProvisionedThroughputSettings, False),
         "Region": (str, True),
+        "ReplicaStreamSpecification": (ReplicaStreamSpecification, False),
+        "ResourcePolicy": (ResourcePolicy, False),
         "SSESpecification": (ReplicaSSESpecification, False),
         "TableClass": (str, False),
         "Tags": (Tags, False),
-    }
-
-
-class ResourcePolicy(AWSProperty):
-    """
-    `ResourcePolicy <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-dynamodb-table-resourcepolicy.html>`__
-    """
-
-    props: PropsDictType = {
-        "PolicyDocument": (dict, True),
     }
 
 

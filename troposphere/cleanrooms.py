@@ -7,7 +7,7 @@
 
 
 from . import AWSObject, AWSProperty, PropsDictType, Tags
-from .validators import boolean, double
+from .validators import boolean, double, integer
 
 
 class AnalysisParameter(AWSProperty):
@@ -155,6 +155,26 @@ class AnalysisRuleAggregation(AWSProperty):
     }
 
 
+class DifferentialPrivacyColumn(AWSProperty):
+    """
+    `DifferentialPrivacyColumn <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-configuredtable-differentialprivacycolumn.html>`__
+    """
+
+    props: PropsDictType = {
+        "Name": (str, True),
+    }
+
+
+class DifferentialPrivacy(AWSProperty):
+    """
+    `DifferentialPrivacy <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-configuredtable-differentialprivacy.html>`__
+    """
+
+    props: PropsDictType = {
+        "Columns": ([DifferentialPrivacyColumn], True),
+    }
+
+
 class AnalysisRuleCustom(AWSProperty):
     """
     `AnalysisRuleCustom <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-configuredtable-analysisrulecustom.html>`__
@@ -163,6 +183,7 @@ class AnalysisRuleCustom(AWSProperty):
     props: PropsDictType = {
         "AllowedAnalyses": ([str], True),
         "AllowedAnalysisProviders": ([str], False),
+        "DifferentialPrivacy": (DifferentialPrivacy, False),
     }
 
 
@@ -335,6 +356,33 @@ class Membership(AWSObject):
         ),
         "PaymentConfiguration": (MembershipPaymentConfiguration, False),
         "QueryLogStatus": (str, True),
+        "Tags": (Tags, False),
+    }
+
+
+class Parameters(AWSProperty):
+    """
+    `Parameters <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-privacybudgettemplate-parameters.html>`__
+    """
+
+    props: PropsDictType = {
+        "Epsilon": (integer, True),
+        "UsersNoisePerQuery": (integer, True),
+    }
+
+
+class PrivacyBudgetTemplate(AWSObject):
+    """
+    `PrivacyBudgetTemplate <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cleanrooms-privacybudgettemplate.html>`__
+    """
+
+    resource_type = "AWS::CleanRooms::PrivacyBudgetTemplate"
+
+    props: PropsDictType = {
+        "AutoRefresh": (str, True),
+        "MembershipIdentifier": (str, True),
+        "Parameters": (Parameters, True),
+        "PrivacyBudgetType": (str, True),
         "Tags": (Tags, False),
     }
 
